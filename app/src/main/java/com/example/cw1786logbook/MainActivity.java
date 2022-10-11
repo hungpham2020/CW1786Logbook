@@ -8,9 +8,11 @@ import android.app.ProgressDialog;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.os.Bundle;
+import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import java.util.List;
@@ -30,6 +32,8 @@ public class MainActivity extends AppCompatActivity {
         Button btnPrev = findViewById(R.id.btnPrev);
         Button btnNext = findViewById(R.id.btnNext);
         Button btnCamera = findViewById(R.id.btnOpenCamera);
+        TextView txtPage = findViewById(R.id.txtPage);
+
         if(!allPermissionsGranted()){
             ActivityCompat.requestPermissions(this, REQUIRED_PERMISSIONS, REQUIRED_CODE_PERMISSIONS);
         }
@@ -37,14 +41,27 @@ public class MainActivity extends AppCompatActivity {
 
         List<String> imageUrls = dbHelper.getUrls();
 
-        AtomicInteger index = new AtomicInteger();
+        if(imageUrls.size() == 0){
+            btnNext.setVisibility(View.INVISIBLE);
+            btnPrev.setVisibility(View.INVISIBLE);
+        } else{
+            btnNext.setVisibility(View.VISIBLE);
+            btnPrev.setVisibility(View.INVISIBLE);
+        }
+
+        AtomicInteger index = new AtomicInteger(0);
 
         btnPrev.setOnClickListener(v -> {
             if(index.get() > 0){
                 index.getAndDecrement();
-            } else{
-                return;
+                btnPrev.setVisibility(View.VISIBLE);
+                btnNext.setVisibility(View.VISIBLE);
             }
+            if(index.get() == 0){
+                btnPrev.setVisibility(View.INVISIBLE);
+                btnNext.setVisibility(View.VISIBLE);
+            }
+            txtPage.setText(String.valueOf(index.get() + 1));
             showUrl(imageUrls, index);
         });
 
@@ -52,11 +69,17 @@ public class MainActivity extends AppCompatActivity {
             if(index.get() < imageUrls.size() - 1){
                 index.getAndIncrement();
                 showUrl(imageUrls, index);
+                btnPrev.setVisibility(View.VISIBLE);
+                btnNext.setVisibility(View.VISIBLE);
+            } if(index.get() == imageUrls.size() - 1){
+                btnNext.setVisibility(View.INVISIBLE);
             }
+            txtPage.setText(String.valueOf(index.get() + 1));
         });
 
         if(imageUrls.size() > 0){
             showUrl(imageUrls, index);
+            txtPage.setText(String.valueOf(index.get() + 1));
         }
 
         btnAddUrl.setOnClickListener(v -> {
