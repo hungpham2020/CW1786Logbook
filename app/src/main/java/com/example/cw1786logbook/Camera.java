@@ -17,6 +17,7 @@ import androidx.core.content.ContextCompat;
 import androidx.lifecycle.LifecycleOwner;
 
 import android.annotation.SuppressLint;
+import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
@@ -63,11 +64,18 @@ public class Camera extends AppCompatActivity implements ImageAnalysis.Analyzer{
 
         List<String> imageUris = dbHelper.getUris();
 
-        try {
-            imageView.setImageBitmap(MediaStore.Images.Media.getBitmap(getContentResolver(), Uri.parse("file:///" + imageUris.get(0))));
-        } catch (IOException e) {
-            e.printStackTrace();
+        if(imageUris.size() > 0){
+            try {
+                imageView.setImageBitmap(MediaStore.Images.Media.getBitmap(getContentResolver(), Uri.parse("file:///" + imageUris.get(0))));
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
         }
+
+        imageView.setOnClickListener(view -> {
+            Intent intent = new Intent(Camera.this, ViewImageInLibrary.class);
+            startActivity(intent);
+        });
     }
 
     private void takPicture() {

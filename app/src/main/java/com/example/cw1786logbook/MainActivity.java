@@ -41,7 +41,7 @@ public class MainActivity extends AppCompatActivity {
 
         List<String> imageUrls = dbHelper.getUrls();
 
-        if(imageUrls.size() == 0){
+        if(imageUrls.size() <= 1){
             btnNext.setVisibility(View.INVISIBLE);
             btnPrev.setVisibility(View.INVISIBLE);
         } else{
@@ -85,6 +85,7 @@ public class MainActivity extends AppCompatActivity {
         btnAddUrl.setOnClickListener(v -> {
             dbHelper.insertUrl(inputUrl.getText().toString());
             inputUrl.setText("");
+            Restart();
         });
 
         btnCamera.setOnClickListener(view -> {
@@ -122,5 +123,9 @@ public class MainActivity extends AppCompatActivity {
                     Toast.makeText(MainActivity .this, "Permission denied", Toast.LENGTH_SHORT).show();
                 }
         }
+    }
+    
+    public void Restart(){
+        this.recreate();
     }
 }
