@@ -77,7 +77,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
 
     public ArrayList<String> getUrls() {
         Cursor cursor = database.query(TABLE_URL, new String[] { URL_ID, URL },
-                null, null, null, null, URL_ID);
+                null, null, null, null, URL_ID + " DESC");
 
         ArrayList<String> results = new ArrayList<String>();
 
@@ -95,7 +95,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
 
     public ArrayList<String> getUris() {
         Cursor cursor = database.query(TABLE_URI, new String[] { URI_ID, URI },
-                null, null, null, null, URI_ID);
+                null, null, null, null, URI_ID + " DESC");
 
         ArrayList<String> results = new ArrayList<String>();
 
@@ -110,8 +110,4 @@ public class DatabaseHelper extends SQLiteOpenHelper {
 
         return results;
     }
-
-//    public void ResetData(){
-//        database.execSQL("DELETE FROM " + TABLE_URL);
-//    }
 }
