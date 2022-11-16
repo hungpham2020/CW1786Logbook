@@ -39,7 +39,7 @@ public class DownLoadImageTask extends AsyncTask {
     protected void onPreExecute() {
         super.onPreExecute();
         mProgressDialog = new ProgressDialog(context);
-        mProgressDialog.setTitle("Download Image tutor");
+        mProgressDialog.setTitle("Download Image");
         mProgressDialog.setMessage("Loading...");
         mProgressDialog.setIndeterminate(false);
         mProgressDialog.show();
